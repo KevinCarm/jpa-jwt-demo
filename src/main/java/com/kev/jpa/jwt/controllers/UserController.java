@@ -45,4 +45,15 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     }
+
+    public ResponseEntity<?> insert(@RequestBody User user) {
+        if(user == null) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("code", HttpStatus.BAD_REQUEST);
+            error.put("message", "Bad request user format");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        service.insert(user);
+        return ResponseEntity.ok(user);
+    }
 }
