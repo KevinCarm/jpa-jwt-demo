@@ -46,6 +46,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping("/")
     public ResponseEntity<?> insert(@RequestBody User user) {
         if(user == null) {
             Map<String, Object> error = new HashMap<>();
