@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Service that a user with the given email is looking for
  **/
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
     private UserService service;
@@ -37,7 +37,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     .map(item -> new SimpleGrantedAuthority(item.getName()))
                     .collect(Collectors.toList());
             return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
+                    user.getEmail(),
                     user.getPassword(),
                     roles
             );

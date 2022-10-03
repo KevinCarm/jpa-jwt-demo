@@ -6,18 +6,18 @@ import com.kev.jpa.jwt.entities.model.User;
 import com.kev.jpa.jwt.entities.service.UserService;
 import com.kev.jpa.jwt.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -40,9 +40,21 @@ public class UserController {
         return ResponseEntity.ok(service.getAll().stream().toList());
     }
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getOneById(@PathVariable Long id) {
+        User user = service.getOneById(id);
+        if(user == null) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("code", HttpStatus.NOT_FOUND);
+            error.put("message", "User not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(user);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        System.out.println(authenticationRequest.getEmail());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

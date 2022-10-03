@@ -5,6 +5,7 @@ import com.kev.jpa.jwt.entities.repository.UserRepository;
 import com.kev.jpa.jwt.entities.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class UserImplementation implements UserService {
     private UserRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return (List<User>) repository.findAll();
     }
@@ -25,6 +27,7 @@ public class UserImplementation implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserByEmail(String email) {
         return repository.getUserByEmail(email);
     }
