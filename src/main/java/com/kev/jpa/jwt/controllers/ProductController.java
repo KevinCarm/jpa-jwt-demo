@@ -33,7 +33,7 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public ResponseEntity<?> insert(@RequestBody Product product) {
         if(product == null) {
             Map<String, Object> error = new HashMap<>();
